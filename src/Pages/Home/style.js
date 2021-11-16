@@ -20,10 +20,6 @@ export const CenterBox = styled.div`
   justify-content: center;
   width: 70%;
   height: 30rem;
-
-  img {
-    width: 100px;
-  }
 `;
 export const ImgCenter = styled.div`
   display: flex;

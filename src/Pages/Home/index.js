@@ -6,13 +6,7 @@ import { HistoryModal } from "../../Components/HistoryModal";
 import Navbar from "../../Components/Navbar";
 import { SideBox } from "../../Components/SideBox";
 import { TeamContext } from "../../Context/teamContext";
-import {
-  ButtonBtm,
-  CenterBox,
-  Container,
-  ContentContainer,
-  ImgCenter,
-} from "./style";
+import { ButtonBtm, CenterBox, Container, ContentContainer } from "./style";
 
 export function Home() {
   const [url, setUrl] = useState([]);
@@ -21,12 +15,10 @@ export function Home() {
   const [urlPagination, setUrlPagination] = useState(
     "https://pokeapi.co/api/v2/pokemon?offset=0&limit=10"
   );
-  const [loading, setLoading] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const { leftTeam, rightTeam } = useContext(TeamContext);
 
   useEffect(() => {
-    setLoading(true);
     axios
       .get(urlPagination)
       .then((response) => {
@@ -39,8 +31,6 @@ export function Home() {
           "Ocorreu um erro ao carregar a página, atualize e tente novamente!"
         )
       );
-
-    setLoading(false);
   }, [urlPagination]);
 
   const calculate = () => {
@@ -84,43 +74,34 @@ export function Home() {
       <SideBox />
       <HistoryModal showHistory={showHistory} setShowHistory={setShowHistory} />
 
-      {loading ? (
-        <ImgCenter>
-          <img
-            src={"https://media.giphy.com/media/l0HlLMeBgzK2UuHVS/giphy.gif"}
-            alt="loading"
-          />
-        </ImgCenter>
-      ) : (
-        <ContentContainer>
-          <CenterBox>
-            {url && url.map((pokemon) => <Card url={pokemon.url} />)}
-          </CenterBox>
-          <ButtonBtm>
-            <button
-              disabled={previous ? false : true}
-              onClick={() => {
-                setUrlPagination(previous);
-              }}
-            >
-              <FaAngleLeft size={30} />
-            </button>
-            <button onClick={calculate}>
-              <h3>TROCAR</h3>
-            </button>
-            <button onClick={() => setShowHistory(true)}>HISTÓRICO </button>
+      <ContentContainer>
+        <CenterBox>
+          {url && url.map((pokemon) => <Card url={pokemon.url} />)}
+        </CenterBox>
+        <ButtonBtm>
+          <button
+            disabled={previous ? false : true}
+            onClick={() => {
+              setUrlPagination(previous);
+            }}
+          >
+            <FaAngleLeft size={30} />
+          </button>
+          <button onClick={calculate}>
+            <h3>TROCAR</h3>
+          </button>
+          <button onClick={() => setShowHistory(true)}>HISTÓRICO </button>
 
-            <button
-              disabled={next ? false : true}
-              onClick={() => {
-                setUrlPagination(next);
-              }}
-            >
-              <FaAngleRight size={30} />
-            </button>
-          </ButtonBtm>
-        </ContentContainer>
-      )}
+          <button
+            disabled={next ? false : true}
+            onClick={() => {
+              setUrlPagination(next);
+            }}
+          >
+            <FaAngleRight size={30} />
+          </button>
+        </ButtonBtm>
+      </ContentContainer>
     </Container>
   );
 }
