@@ -1,23 +1,29 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { Card } from "../../Components/Card";
+import { HistoryModal } from "../../Components/HistoryModal";
 import Navbar from "../../Components/Navbar";
 import { SideBox } from "../../Components/SideBox";
-import { ButtonBtm, CenterBox, Container, ContentContainer } from "./style";
+import {
+  ButtonBtm,
+  CenterBox,
+  Container,
+  ContentContainer,
+  ImgCenter,
+} from "./style";
 
 export function Home() {
   const [url, setUrl] = useState([]);
-
   const [next, setNext] = useState();
   const [previous, setPrevious] = useState();
   const [urlPagination, setUrlPagination] = useState(
-    "https://pokeapi.co/api/v2/pokemon?offset=0&limit=15"
+    "https://pokeapi.co/api/v2/pokemon?offset=0&limit=10"
   );
   const [leftSide, setLeftSide] = useState([]);
   const [rightSide, setRightSide] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const [showHistory, setShowHistory] = useState(false);
   useEffect(() => {
     getPokemons();
   }, [urlPagination]);
@@ -29,6 +35,7 @@ export function Home() {
       setNext(response.data.next);
       setPrevious(response.data.previous);
     });
+
     setLoading(false);
   };
 
@@ -44,11 +51,26 @@ export function Home() {
 
     if (rightSide.length === 0 || leftSide.length === 0) {
       alert("Selecione no mínimo 1 pokémon para cada lado!");
-    }
-    if (Math.abs(right - left) <= 30) {
-      alert("Troca justa");
     } else {
-      alert("Troca injusta");
+      var compare = Math.abs(right - left);
+      var fair;
+      if (compare <= 30) {
+        alert("Troca justa");
+        fair = "Troca justa";
+      } else {
+        alert("Troca injusta");
+        fair = "Troca injusta";
+      }
+
+      var history = JSON.parse(localStorage.getItem("history") || "[]");
+
+      history.push({
+        leftSide: left,
+        rightSide: right,
+        fair: fair,
+      });
+
+      localStorage.setItem("history", JSON.stringify(history));
     }
   };
 
@@ -56,17 +78,16 @@ export function Home() {
     <Container>
       <Navbar />
       <SideBox leftPokemons={leftSide} rightPokemons={rightSide} />
-      <img
-        src={
-          "https://giphy.com/gifs/pokemon-pikachu-after-effects-l0HlLMeBgzK2UuHVS"
-        }
-      />
+      <HistoryModal showHistory={showHistory} setShowHistory={setShowHistory} />
+
+      <button onClick={() => setShowHistory(true)}>Histórico</button>
       {loading ? (
-        <img
-          src={
-            "https://giphy.com/gifs/pokemon-pikachu-after-effects-l0HlLMeBgzK2UuHVS"
-          }
-        />
+        <ImgCenter>
+          <img
+            src={"https://media.giphy.com/media/l0HlLMeBgzK2UuHVS/giphy.gif"}
+            alt="loading"
+          />
+        </ImgCenter>
       ) : (
         <ContentContainer>
           <CenterBox>
