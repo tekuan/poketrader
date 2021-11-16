@@ -77,10 +77,13 @@ export function Home() {
   return (
     <Container>
       <Navbar />
-      <SideBox leftPokemons={leftSide} rightPokemons={rightSide} />
+      <SideBox
+        leftPokemons={leftSide}
+        setLeftSide={setLeftSide}
+        rightPokemons={rightSide}
+      />
       <HistoryModal showHistory={showHistory} setShowHistory={setShowHistory} />
 
-      <button onClick={() => setShowHistory(true)}>Histórico</button>
       {loading ? (
         <ImgCenter>
           <img
@@ -114,6 +117,7 @@ export function Home() {
             <button onClick={calculate}>
               <h3>TROCAR</h3>
             </button>
+            <button onClick={() => setShowHistory(true)}>HISTÓRICO </button>
 
             <button
               disabled={next ? false : true}
