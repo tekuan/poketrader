@@ -1,11 +1,13 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { useState } from "react/cjs/react.development";
+import { TeamContext } from "../../Context/teamContext";
 import { PokeCard } from "./style";
 
-export function Card({ url, leftSide, setLeftSide, rightSide, setRightSide }) {
+export function Card({ url }) {
   const [pokemon, setPokemon] = useState([]);
+  const { AddLeftTeam, AddRightTeam } = useContext(TeamContext);
 
   useEffect(() => {
     getPokemon();
@@ -17,15 +19,11 @@ export function Card({ url, leftSide, setLeftSide, rightSide, setRightSide }) {
     });
   };
   const handleLeftSide = () => {
-    leftSide.length === 6
-      ? alert("Selecionar no máximo 6 pokémons!")
-      : setLeftSide((prev) => [...prev, pokemon]);
+    AddLeftTeam(pokemon);
   };
 
   const handleRightSide = () => {
-    rightSide.length === 6
-      ? alert("Selecionar no máximo 6 pokémons!")
-      : setRightSide((prev) => [...prev, pokemon]);
+    AddRightTeam(pokemon);
   };
 
   return (

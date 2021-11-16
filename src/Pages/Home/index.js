@@ -1,10 +1,11 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { Card } from "../../Components/Card";
 import { HistoryModal } from "../../Components/HistoryModal";
 import Navbar from "../../Components/Navbar";
 import { SideBox } from "../../Components/SideBox";
+import { TeamContext } from "../../Context/teamContext";
 import {
   ButtonBtm,
   CenterBox,
@@ -20,10 +21,10 @@ export function Home() {
   const [urlPagination, setUrlPagination] = useState(
     "https://pokeapi.co/api/v2/pokemon?offset=0&limit=10"
   );
-  const [leftSide, setLeftSide] = useState([]);
-  const [rightSide, setRightSide] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
+  const { leftTeam, rightTeam } = useContext(TeamContext);
+
   useEffect(() => {
     getPokemons();
   }, [urlPagination]);
@@ -40,16 +41,16 @@ export function Home() {
   };
 
   const calculate = () => {
-    var left = leftSide.reduce(
+    var left = leftTeam.reduce(
       (left, pokemon) => left + pokemon.base_experience,
       0
     );
-    var right = rightSide.reduce(
+    var right = rightTeam.reduce(
       (right, pokemon) => right + pokemon.base_experience,
       0
     );
 
-    if (rightSide.length === 0 || leftSide.length === 0) {
+    if (rightTeam.length === 0 || leftTeam.length === 0) {
       alert("Selecione no mínimo 1 pokémon para cada lado!");
     } else {
       var compare = Math.abs(right - left);
@@ -77,11 +78,7 @@ export function Home() {
   return (
     <Container>
       <Navbar />
-      <SideBox
-        leftPokemons={leftSide}
-        setLeftSide={setLeftSide}
-        rightPokemons={rightSide}
-      />
+      <SideBox />
       <HistoryModal showHistory={showHistory} setShowHistory={setShowHistory} />
 
       {loading ? (
@@ -94,16 +91,7 @@ export function Home() {
       ) : (
         <ContentContainer>
           <CenterBox>
-            {url &&
-              url.map((pokemon) => (
-                <Card
-                  url={pokemon.url}
-                  leftSide={leftSide}
-                  setLeftSide={setLeftSide}
-                  rightSide={rightSide}
-                  setRightSide={setRightSide}
-                />
-              ))}
+            {url && url.map((pokemon) => <Card url={pokemon.url} />)}
           </CenterBox>
           <ButtonBtm>
             <button

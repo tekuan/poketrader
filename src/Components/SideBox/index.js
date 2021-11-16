@@ -1,33 +1,29 @@
-import React from "react";
+import React, { useContext } from "react";
+import { TeamContext } from "../../Context/teamContext";
 import { LeftBox, RightBox } from "./style";
-export function SideBox({ leftPokemons, rightPokemons }) {
-  const removePokemon = (e) => {
-    if (e?.target?.title === "left") leftPokemons.splice(e?.target?.id, 1);
 
-    if (e?.target?.title === "right") rightPokemons.splice(e?.target?.id, 1);
-  };
+export function SideBox() {
+  const { leftTeam, RemoveLeftTeam, rightTeam, RemoveRightTeam } =
+    useContext(TeamContext);
+
   return (
     <>
       <LeftBox>
-        {leftPokemons.map((pokemon, index) => (
+        {leftTeam.map((pokemon, index) => (
           <img
             src={pokemon?.sprites?.front_default}
             alt="pokemon"
-            id={index}
-            title={"left"}
-            onClick={removePokemon}
+            onClick={() => RemoveLeftTeam(index)}
           />
         ))}
       </LeftBox>
 
       <RightBox>
-        {rightPokemons.map((pokemon, index) => (
+        {rightTeam.map((pokemon, index) => (
           <img
             src={pokemon?.sprites?.front_default}
             alt="pokemon"
-            id={index}
-            title={"right"}
-            onClick={removePokemon}
+            onClick={() => RemoveRightTeam(index)}
           />
         ))}
       </RightBox>
