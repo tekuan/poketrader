@@ -6,4 +6,5 @@ export const Header = styled.div`
   justify-content: space-between;
   padding: 0 4vw;
   z-index: 1;
+  position: sticky;
 `;

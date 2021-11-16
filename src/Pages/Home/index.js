@@ -1,118 +1,110 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
-import api from "../../api";
 import { Card } from "../../Components/Card";
 import Navbar from "../../Components/Navbar";
-import {
-  ButtonBtm,
-  CenterBox,
-  Container,
-  ContentContainer,
-  LeftBox,
-  RightBox,
-} from "./styles";
+import { SideBox } from "../../Components/SideBox";
+import { ButtonBtm, CenterBox, Container, ContentContainer } from "./style";
 
-export default function Home() {
-  const [data, setData] = useState([]);
+export function Home() {
   const [url, setUrl] = useState([]);
-  const [offset, setOffset] = useState(0);
-  const [leftXP, setLeftXP] = useState([]);
-  const [rightXP, setRightXP] = useState([]);
-  const [fair, setFair] = useState("");
+
+  const [next, setNext] = useState();
+  const [previous, setPrevious] = useState();
+  const [urlPagination, setUrlPagination] = useState(
+    "https://pokeapi.co/api/v2/pokemon?offset=0&limit=15"
+  );
+  const [leftSide, setLeftSide] = useState([]);
+  const [rightSide, setRightSide] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getPokemons(offset);
-  }, [offset]);
+    getPokemons();
+  }, [urlPagination]);
 
-  const getPokemons = (offset) => {
-    api.get(`pokemon?limit=10&offset=${offset}`).then((response) => {
+  const getPokemons = () => {
+    setLoading(true);
+    axios.get(urlPagination).then((response) => {
       setUrl(response.data.results);
+      setNext(response.data.next);
+      setPrevious(response.data.previous);
     });
-  };
-
-  const leftSide = (pokemon) => {
-    setLeftXP((prev) => [...prev, pokemon]);
-  };
-  const rightSide = (pokemon) => {
-    setRightXP((prev) => [...prev, pokemon]);
-  };
-
-  const clear = () => {
-    setRightXP([]);
-    setLeftXP([]);
+    setLoading(false);
   };
 
   const calculate = () => {
-    var left = leftXP.reduce(
+    var left = leftSide.reduce(
       (left, pokemon) => left + pokemon.base_experience,
       0
     );
-    var right = rightXP.reduce(
+    var right = rightSide.reduce(
       (right, pokemon) => right + pokemon.base_experience,
       0
     );
 
-    if (right === left) {
-      if (right !== 0 && left !== 0) setFair("Troca justa");
-    } else setFair("Troca injusta");
+    if (rightSide.length === 0 || leftSide.length === 0) {
+      alert("Selecione no mínimo 1 pokémon para cada lado!");
+    }
+    if (Math.abs(right - left) <= 30) {
+      alert("Troca justa");
+    } else {
+      alert("Troca injusta");
+    }
   };
 
   return (
     <Container>
       <Navbar />
+      <SideBox leftPokemons={leftSide} rightPokemons={rightSide} />
+      <img
+        src={
+          "https://giphy.com/gifs/pokemon-pikachu-after-effects-l0HlLMeBgzK2UuHVS"
+        }
+      />
+      {loading ? (
+        <img
+          src={
+            "https://giphy.com/gifs/pokemon-pikachu-after-effects-l0HlLMeBgzK2UuHVS"
+          }
+        />
+      ) : (
+        <ContentContainer>
+          <CenterBox>
+            {url &&
+              url.map((pokemon) => (
+                <Card
+                  url={pokemon.url}
+                  leftSide={leftSide}
+                  setLeftSide={setLeftSide}
+                  rightSide={rightSide}
+                  setRightSide={setRightSide}
+                />
+              ))}
+          </CenterBox>
+          <ButtonBtm>
+            <button
+              disabled={previous ? false : true}
+              onClick={() => {
+                setUrlPagination(previous);
+              }}
+            >
+              <FaAngleLeft size={30} />
+            </button>
+            <button onClick={calculate}>
+              <h3>TROCAR</h3>
+            </button>
 
-      <RightBox>
-        <div>
-          {rightXP &&
-            rightXP.map((pokemon) => (
-              <img src={pokemon.sprites.front_default} alt="pokemon" />
-            ))}
-        </div>
-      </RightBox>
-
-      <LeftBox>
-        <div>
-          {leftXP &&
-            leftXP.map((pokemon) => (
-              <img src={pokemon.sprites.front_default} alt="pokemon" />
-            ))}
-        </div>
-      </LeftBox>
-      <ContentContainer>
-        <CenterBox>
-          {url && url.map((pokemon) => <Card url={pokemon.url} />)}
-        </CenterBox>
-
-        <ButtonBtm>
-          <button
-            disabled={offset === 0 ? true : false}
-            onClick={() => {
-              if (offset >= 0) setOffset(offset - 10);
-            }}
-          >
-            <FaAngleLeft />
-          </button>
-          <button onClick={calculate}>
-            <h3>CALCULAR</h3>
-          </button>
-          <div>
-            <h3>{fair}</h3>
-          </div>
-          <button onClick={clear}>
-            <h3>LIMPAR</h3>
-          </button>
-          <button
-            disabled={offset === 1110 ? true : false}
-            onClick={() => {
-              if (offset <= 1100) setOffset(offset + 10);
-            }}
-          >
-            <h4>
-              <FaAngleRight />
-            </h4>
-          </button>
-        </ButtonBtm>
-      </ContentContainer>
+            <button
+              disabled={next ? false : true}
+              onClick={() => {
+                setUrlPagination(next);
+              }}
+            >
+              <FaAngleRight size={30} />
+            </button>
+          </ButtonBtm>
+        </ContentContainer>
+      )}
     </Container>
   );
 }
