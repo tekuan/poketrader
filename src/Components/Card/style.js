@@ -7,16 +7,17 @@ export const PokeCard = styled.div`
   justify-content: center;
   width: 10rem;
   margin: 0.5rem;
+
   div {
     display: flex;
     flex-direction: row;
     border-radius: 100%;
-    background-color: #fff;
+    background-color: #dcdcdc;
     width: 10rem;
     height: 10rem;
     align-items: center;
     justify-content: space-between;
-    box-shadow: inset 0 0 1em #000;
+    box-shadow: 0 0 1em #000;
   }
   div:hover {
     background-color: rgba(251, 215, 67, 0.5);
@@ -36,8 +37,12 @@ export const PokeCard = styled.div`
   span {
     display: flex;
     align-self: center;
-    top: 0;
-    box-shadow: inset 0 0 1em #fbd743;
-    border-radius: 0.1rem;
+    position: relative;
+  }
+  p {
+    margin: 0;
+    text-align: center;
+    top: 2rem;
+    position: relative;
   }
 `;

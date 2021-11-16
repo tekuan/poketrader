@@ -8,7 +8,7 @@ export const LeftBox = styled.div`
   align-items: center;
   align-content: center;
   width: 12rem;
-  height: 100vh;
+  height: 45rem;
   position: absolute;
   top: 3.6rem;
 `;
@@ -20,7 +20,7 @@ export const RightBox = styled.div`
   align-items: center;
   align-content: center;
   width: 12rem;
-  height: 100%;
+  height: 45rem;
   position: absolute;
   top: 3.6rem;
 `;

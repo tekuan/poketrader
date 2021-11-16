@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  align-intems: center;
+  position: relative;
 `;
 
 export const ContentContainer = styled.div`
@@ -25,6 +25,14 @@ export const CenterBox = styled.div`
     width: 100px;
   }
 `;
+export const ImgCenter = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+  position: relative;
+  top: 5rem;
+`;
 
 export const ButtonBtm = styled.button`
   display: flex;
@@ -35,7 +43,7 @@ export const ButtonBtm = styled.button`
   width: 50rem;
   border: 0;
   background-color: transparent;
-  margin-top: 7.5rem;
+  top: 3rem;
   button {
     width: 8rem;
     height: 4rem;
@@ -46,7 +54,7 @@ export const ButtonBtm = styled.button`
   }
   div {
     display: flex;
-    align-itens: center;
+    align-items: center;
     justify-content: center;
     width: 8rem;
     height: 4rem;
