@@ -38,11 +38,15 @@ export const PokeCard = styled.div`
     display: flex;
     align-self: center;
     position: relative;
+    bottom: 2.3rem;
+    opacity: 0.5;
+    text-align: center;
   }
   p {
     margin: 0;
     text-align: center;
     top: 2rem;
     position: relative;
+    opacity: 0.5;
   }
 `;

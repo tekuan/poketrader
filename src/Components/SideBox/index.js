@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { TeamContext } from "../../Context/teamContext";
 import { LeftBox, RightBox } from "./style";
 
@@ -10,21 +11,19 @@ export function SideBox() {
     <>
       <LeftBox>
         {leftTeam.map((pokemon, index) => (
-          <img
-            src={pokemon?.sprites?.front_default}
-            alt="pokemon"
-            onClick={() => RemoveLeftTeam(index)}
-          />
+          <div onClick={() => RemoveLeftTeam(index)}>
+            <img src={pokemon?.sprites?.front_default} alt="pokemon" />
+            <FaAngleRight size={40} color="white" />
+          </div>
         ))}
       </LeftBox>
 
       <RightBox>
         {rightTeam.map((pokemon, index) => (
-          <img
-            src={pokemon?.sprites?.front_default}
-            alt="pokemon"
-            onClick={() => RemoveRightTeam(index)}
-          />
+          <div onClick={() => RemoveRightTeam(index)}>
+            <FaAngleLeft size={40} color="white" />
+            <img src={pokemon?.sprites?.front_default} alt="pokemon" />
+          </div>
         ))}
       </RightBox>
     </>

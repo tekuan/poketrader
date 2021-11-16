@@ -10,14 +10,18 @@ export function Card({ url }) {
   const { AddLeftTeam, AddRightTeam } = useContext(TeamContext);
 
   useEffect(() => {
-    getPokemon();
+    axios
+      .get(url)
+      .then((response) => {
+        setPokemon(response.data);
+      })
+      .catch((error) =>
+        alert(
+          "Ocorreu um erro ao carregar a página, atualize e tente novamente!"
+        )
+      );
   }, [url]);
 
-  const getPokemon = () => {
-    axios.get(url).then((response) => {
-      setPokemon(response.data);
-    });
-  };
   const handleLeftSide = () => {
     AddLeftTeam(pokemon);
   };

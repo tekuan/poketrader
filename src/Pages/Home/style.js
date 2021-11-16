@@ -40,7 +40,7 @@ export const ButtonBtm = styled.button`
   align-self: center;
   justify-content: space-between;
   position: relative;
-  width: 50rem;
+  width: 40rem;
   border: 0;
   background-color: transparent;
   top: 3rem;

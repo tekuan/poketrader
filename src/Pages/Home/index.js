@@ -26,19 +26,22 @@ export function Home() {
   const { leftTeam, rightTeam } = useContext(TeamContext);
 
   useEffect(() => {
-    getPokemons();
-  }, [urlPagination]);
-
-  const getPokemons = () => {
     setLoading(true);
-    axios.get(urlPagination).then((response) => {
-      setUrl(response.data.results);
-      setNext(response.data.next);
-      setPrevious(response.data.previous);
-    });
+    axios
+      .get(urlPagination)
+      .then((response) => {
+        setUrl(response.data.results);
+        setNext(response.data.next);
+        setPrevious(response.data.previous);
+      })
+      .catch((error) =>
+        alert(
+          "Ocorreu um erro ao carregar a página, atualize e tente novamente!"
+        )
+      );
 
     setLoading(false);
-  };
+  }, [urlPagination]);
 
   const calculate = () => {
     var left = leftTeam.reduce(

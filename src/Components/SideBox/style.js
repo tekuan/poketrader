@@ -11,6 +11,16 @@ export const LeftBox = styled.div`
   height: 45rem;
   position: absolute;
   top: 3.6rem;
+  div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  div:hover {
+    opacity: 0.5;
+    cursor: pointer;
+  }
 `;
 export const RightBox = styled.div`
   display: flex;
@@ -23,4 +33,14 @@ export const RightBox = styled.div`
   height: 45rem;
   position: absolute;
   top: 3.6rem;
+  div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  div:hover {
+    opacity: 0.5;
+    cursor: pointer;
+  }
 `;

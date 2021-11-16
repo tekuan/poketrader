@@ -12,8 +12,7 @@ export const TeamContextProvider = ({ children }) => {
       : setLeftTeam((prev) => [...prev, pokemon]);
   };
   const RemoveLeftTeam = (index) => {
-    leftTeam.splice(index, 1);
-    setLeftTeam(leftTeam);
+    setLeftTeam(leftTeam.filter((pokemon, pokeIndex) => pokeIndex !== index));
   };
 
   const AddRightTeam = (pokemon) => {
@@ -22,8 +21,7 @@ export const TeamContextProvider = ({ children }) => {
       : setRightTeam((prev) => [...prev, pokemon]);
   };
   const RemoveRightTeam = (index) => {
-    rightTeam.splice(index, 1);
-    setRightTeam(rightTeam);
+    setRightTeam(rightTeam.filter((pokemon, pokeIndex) => pokeIndex !== index));
   };
   return (
     <TeamContext.Provider
